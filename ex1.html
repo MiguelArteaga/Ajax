@@ -1,0 +1,71 @@
+<!DOCTYPE >
+<html>
+  <head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <meta charset="utf-8">
+    <title>Hola Mundo con AJAX</title>
+
+   
+
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+
+        var elementoPadre=$('#primerDiv');
+
+        
+
+        var primerInput=$('<input>').attr({'name':'inputPrimero','type':'number'});
+        var segundoInput=$('<input>').attr({'name':'inputSegundo','type':'number'});
+
+        var inputSubmit=$('<input>').attr({'type':'submit','value':'Enviar','name':'enviar'});
+
+        elementoPadre.append(primerInput);
+        elementoPadre.append(segundoInput);
+        elementoPadre.append(inputSubmit);
+
+        $("input[name='enviar']").on("click",descargaArchivo);
+
+        
+      });
+
+      function descargaArchivo() {
+        var primerNumero = $("input[name='inputPrimero']").val();
+        var segundoNumero = $("input[name='inputSegundo']").val();
+
+        // Obtener la instancia del objeto XMLHttpRequest
+        if(window.XMLHttpRequest) {
+          peticion_http = new XMLHttpRequest();
+        }
+        else if(window.ActiveXObject) {
+          peticion_http = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        // Preparar la funcion de respuesta
+        peticion_http.onreadystatechange = muestraContenido;
+
+        // Realizar peticion HTTP
+        peticion_http.open('GET', 'http://localhost/ejercicios_js/suma.php?inputPrimero='+primerNumero+'&inputSegundo='+segundoNumero, true);
+        peticion_http.send(null);
+
+        function muestraContenido() {
+          if(peticion_http.readyState == 4) {
+            if(peticion_http.status == 200) {
+              alert(peticion_http.responseText);
+            }
+          }
+        }
+      }
+
+    //window.onload = descargaArchivo;
+
+
+    
+    
+    </script>
+
+  </head>
+  <body>
+    <div id="primerDiv"></div>
+  </body>
+</html>
